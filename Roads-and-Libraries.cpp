@@ -73,7 +73,7 @@ long minCost(Graph *graph, long c_lib, long c_road)
 
 long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
 {
-    Graph* graph = new Graph(n, false);
+    Graph* graph = new Graph(n, true);
 
     cout << cities.size() << endl;
 
