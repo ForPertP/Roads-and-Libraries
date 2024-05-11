@@ -19,92 +19,86 @@ vector<string> split(const string &);
 
 class Graph
 {
-    public:
-        bool directed;
-        long v;
-        std::list<long> *adjList;
-        Graph(long v, bool directed);
-        ~Graph();
-        void addEdge(int v, int e);
+public:
+    bool directed;
+    long num_vertices;
+    vector<list<long>> adjacency_list;
+    Graph(long num_vertices, bool directed);
+    void addEdge(int vertex1, int vertex2);
 };
 
-Graph::Graph(long v, bool directed)
+Graph::Graph(long num_vertices, bool directed)
 {
-    this->v = v;
+    this->num_vertices = num_vertices;
     this->directed = directed;
-    adjList = new list<long>[v];
+    adjacency_list.resize(num_vertices);
 }
 
-Graph::~Graph()
+void Graph::addEdge(int vertex1, int vertex2)
 {
-    delete[] adjList;
-}
-
-void Graph::addEdge(int v, int e)
-{
-    adjList[v].push_back(e);
+    adjacency_list[vertex1].push_back(vertex2);
 
     if (!directed)
     {
-        adjList[e].push_back(v);
+        adjacency_list[vertex2].push_back(vertex1);
     }
 }
 
-int dfsUtil(std::shared_ptr<Graph>& graph, vector<bool>& visited, int current)
+int depthFirstSearchUtil(Graph& graph, vector<bool>& visited, int current_vertex)
 {
     int count = 1;
-    visited[current] = true;
-    
-    std::list<long>::iterator it;
-    for (it = graph->adjList[current].begin(); it != graph->adjList[current].end(); ++it)
+    visited[current_vertex] = true;
+
+    list<long>::iterator it;
+    for (it = graph.adjacency_list[current_vertex].begin(); it != graph.adjacency_list[current_vertex].end(); ++it)
     {
         if (!visited[*it])
         {
-            count += dfsUtil(graph, visited, *it);
+            count += depthFirstSearchUtil(graph, visited, *it);
         }
     }
 
     return count;
 }
 
-long minCost(std::shared_ptr<Graph>& graph, long c_lib, long c_road)
+long minimumCost(Graph& graph, long cost_library, long cost_road)
 {
-    if (c_lib < c_road)
+    if (cost_library < cost_road)
     {
-        return c_lib * graph->v;
+        return cost_library * graph.num_vertices;
     }
 
-    vector<bool> visited(graph->v, false);
-    long cost = 0;
-    
-    for (int i = 0; i < graph->v; ++i)
+    vector<bool> visited(graph.num_vertices, false);
+    long total_cost = 0;
+
+    for (int i = 0; i < graph.num_vertices; ++i)
     {
         if (!visited[i])
         {
-            int x = dfsUtil(graph,visited,i);
-            cost += (x-1) * c_road;
-            cost += c_lib;
+            int num_connected_vertices = depthFirstSearchUtil(graph, visited, i);
+            total_cost += (num_connected_vertices - 1) * cost_road;
+            total_cost += cost_library;
         }
     }
 
-    return cost;
+    return total_cost;
 }
 
-long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
+//long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
+long roadsAndLibraries(int num_cities, int cost_library, int cost_road, vector<vector<int>> cities)
 {
-    std::shared_ptr<Graph> graph = std::make_shared<Graph>(n, false);
-
-    cout << cities.size() << endl;
+    Graph graph(num_cities, false);
 
     for (size_t i = 0; i < cities.size(); ++i)
     {
-        graph->addEdge(cities[i][0]-1, cities[i][1]-1);
+        graph.addEdge(cities[i][0] - 1, cities[i][1] - 1);
     }
 
-    long cost = minCost(graph, c_lib, c_road);
+    long minimum_cost = minimumCost(graph, cost_library, cost_road);
 
-    return cost;
+    return minimum_cost;
 }
+
 
 int main()
 {
@@ -154,43 +148,4 @@ int main()
     fout.close();
 
     return 0;
-}
-
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
-}
-
-vector<string> split(const string &str) {
-    vector<string> tokens;
-
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-
-        start = end + 1;
-    }
-
-    tokens.push_back(str.substr(start));
-
-    return tokens;
 }
