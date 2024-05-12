@@ -23,6 +23,8 @@ public:
     bool directed;
     long num_vertices;
     vector<list<long>> adjacency_list;
+
+public:    
     Graph(long num_vertices, bool directed);
     void addEdge(int vertex1, int vertex2);
 };
@@ -149,7 +151,6 @@ int main()
 
     return 0;
 }
-
 
 string ltrim(const string &str) {
     string s(str);
