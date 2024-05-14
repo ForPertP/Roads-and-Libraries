@@ -39,3 +39,74 @@ public class Graph
         }
     }
 }
+
+
+class Result
+{
+    public static long MinimumCost(Graph graph, long costLibrary, long costRoad)
+    {
+        long totalCost = 0;
+
+         return totalCost;
+    }
+
+    private static int DepthFirstSearchUtil(Graph graph, bool[] visited, int currentVertex)
+    {
+        int count = 1;
+ 
+        return count;
+    }
+
+    //public static long roadsAndLibraries(int n, int c_lib, int c_road, List<List<int>> cities)
+    public static long roadsAndLibraries(int numCities, int costLibrary, int costRoad, List<List<int>> cities)
+    {
+        var graph = new Graph(numCities, false);
+
+        foreach (var city in cities)
+        {
+            graph.AddEdge(city[0] - 1, city[1] - 1);
+        }
+
+        long minimumCost = MinimumCost(graph, costLibrary, costRoad);
+
+        return minimumCost;
+    }
+}
+
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int q = Convert.ToInt32(Console.ReadLine().Trim());
+
+        for (int qItr = 0; qItr < q; qItr++)
+        {
+            string[] firstMultipleInput = Console.ReadLine().TrimEnd().Split(' ');
+
+            int n = Convert.ToInt32(firstMultipleInput[0]);
+
+            int m = Convert.ToInt32(firstMultipleInput[1]);
+
+            int c_lib = Convert.ToInt32(firstMultipleInput[2]);
+
+            int c_road = Convert.ToInt32(firstMultipleInput[3]);
+
+            List<List<int>> cities = new List<List<int>>();
+
+            for (int i = 0; i < m; i++)
+            {
+                cities.Add(Console.ReadLine().TrimEnd().Split(' ').ToList().Select(citiesTemp => Convert.ToInt32(citiesTemp)).ToList());
+            }
+
+            long result = Result.roadsAndLibraries(n, c_lib, c_road, cities);
+
+            textWriter.WriteLine(result);
+        }
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
