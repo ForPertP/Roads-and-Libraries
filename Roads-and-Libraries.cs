@@ -45,15 +45,30 @@ class Result
 {
     public static long MinimumCost(Graph graph, long costLibrary, long costRoad)
     {
+        if (costLibrary < costRoad)
+        {
+            return costLibrary * graph.NumVertices;
+        }
+
+        var visited = new bool[graph.NumVertices];
         long totalCost = 0;
 
-         return totalCost;
+        for (int i = 0; i < graph.NumVertices; ++i)
+        {
+            if (!visited[i])
+            {
+                int numConnectedVertices = DepthFirstSearchUtil(graph, visited, i);
+                totalCost += (numConnectedVertices - 1) * costRoad;
+                totalCost += costLibrary;
+            }
+        }
+
+        return totalCost;
     }
 
     private static int DepthFirstSearchUtil(Graph graph, bool[] visited, int currentVertex)
     {
         int count = 1;
- 
         return count;
     }
 
