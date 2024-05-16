@@ -69,6 +69,16 @@ class Result
     private static int DepthFirstSearchUtil(Graph graph, bool[] visited, int currentVertex)
     {
         int count = 1;
+        visited[currentVertex] = true;
+
+        foreach (var neighbor in graph.AdjacencyList[currentVertex])
+        {
+            if (!visited[neighbor])
+            {
+                count += DepthFirstSearchUtil(graph, visited, (int)neighbor);
+            }
+        }
+
         return count;
     }
 
