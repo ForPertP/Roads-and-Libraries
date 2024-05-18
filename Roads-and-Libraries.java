@@ -33,6 +33,29 @@ class Graph {
     }
 }
 
+class Result {
+    public static int depthFirstSearchUtil(Graph graph, boolean[] visited, int currentVertex) {
+        int count = 1;
+        return count;
+    }
+
+    public static long minimumCost(Graph graph, long costLibrary, long costRoad) {
+        long totalCost = 0;
+        return totalCost;
+    }
+    
+    // public static long roadsAndLibraries(int n, int c_lib, int c_road, List<List<Integer>> cities) {
+    public static long roadsAndLibraries(int numCities, int costLibrary, int costRoad, List<List<Integer>> cities) {
+        Graph graph = new Graph(numCities, false);
+
+        for (List<Integer> city : cities) {
+            graph.addEdge(city.get(0) - 1, city.get(1) - 1);
+        }
+
+        return minimumCost(graph, costLibrary, costRoad);
+    }
+}
+
 
 public class Solution {
     public static void main(String[] args) throws IOException {
