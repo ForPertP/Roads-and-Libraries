@@ -36,7 +36,15 @@ class Graph {
 class Result {
     public static int depthFirstSearchUtil(Graph graph, boolean[] visited, int currentVertex) {
         int count = 1;
-        return count;
+        visited[currentVertex] = true;
+
+        for (long neighbor : graph.adjacencyList.get(currentVertex)) {
+            if (!visited[(int) neighbor]) {
+                count += depthFirstSearchUtil(graph, visited, (int) neighbor);
+            }
+        }
+
+        return count;        
     }
 
     public static long minimumCost(Graph graph, long costLibrary, long costRoad) {
