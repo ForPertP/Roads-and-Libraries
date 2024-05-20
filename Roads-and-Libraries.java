@@ -33,6 +33,7 @@ class Graph {
     }
 }
 
+
 class Result {
     public static int depthFirstSearchUtil(Graph graph, boolean[] visited, int currentVertex) {
         int count = 1;
@@ -44,11 +45,25 @@ class Result {
             }
         }
 
-        return count;        
+        return count;
     }
 
     public static long minimumCost(Graph graph, long costLibrary, long costRoad) {
+        if (costLibrary < costRoad) {
+            return costLibrary * graph.numVertices;
+        }
+
+        boolean[] visited = new boolean[(int) graph.numVertices];
         long totalCost = 0;
+
+        for (int i = 0; i < graph.numVertices; ++i) {
+            if (!visited[i]) {
+                int numConnectedVertices = depthFirstSearchUtil(graph, visited, i);
+                totalCost += (numConnectedVertices - 1) * costRoad;
+                totalCost += costLibrary;
+            }
+        }
+
         return totalCost;
     }
     
@@ -111,5 +126,3 @@ public class Solution {
         bufferedWriter.close();
     }
 }
-
-
